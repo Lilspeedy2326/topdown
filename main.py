@@ -1,6 +1,7 @@
 import pygame
 from player import player
 from fireball import fireball
+from enemy import enemy 
 pygame.init()
 pygame.font.init() # you have to call this at the start, if you want to use this module.
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
@@ -43,11 +44,13 @@ DOWN = 2
 UP = 3
 SPACE = 4
 W = 5
-
+ticker = 0
 #instantiate a player
 p1 = player()
 
 ball = fireball()
+
+e1 = enemy()
 
 keys = [False, False, False, False, False]
 map = [[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
@@ -75,6 +78,7 @@ open_screen_text = my_font.render('Gerardo\'s Adventure', False, (0, 0, 0))
  
 while not gameover:#GAME LOOP=========================================================================================
     clock.tick(60) #FPS
+    ticker += 1
     #input section--------------------------------------------------------------
     for event in pygame.event.get(): #quit game if x is pressed in top corner
         if event.type == pygame.QUIT:
@@ -122,6 +126,7 @@ while not gameover:#GAME LOOP===================================================
    
     #physics section------------------------------------------------------------------
     p1.move(keys, map)
+    e1.move(map, ticker, p1.xpos, p1.ypos)
     ball.move()
     #check space for shooting
     if keys[SPACE] == True:
@@ -203,6 +208,8 @@ while not gameover:#GAME LOOP===================================================
     
         if ball.isAlive == True:
             ball.draw(screen)
+            
+        e1.draw(screen)
         
     #if state == 3:
         #screen.fill((64,224,208))# clear the screen turquoise
@@ -214,3 +221,4 @@ while not gameover:#GAME LOOP===================================================
     
 #end game loop=========================================================================================================
 pygame.quit()
+
